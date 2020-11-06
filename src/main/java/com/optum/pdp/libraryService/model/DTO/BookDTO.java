@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class BookDTO {
 
-    private String bookId;
+    private Long bookId;
     private String title;
     private String author;
     private String category;
 
 
-    public void setBookId(String bookId) {
+    public void setBookId(Long bookId) {
         this.bookId = bookId;
     }
 
@@ -26,7 +26,7 @@ public class BookDTO {
         this.category = category;
     }
 
-    public String getBookId() {
+    public Long getBookId() {
         return bookId;
     }
 
@@ -65,7 +65,9 @@ public class BookDTO {
                 '}';
     }
 
-    public BookDTO(String bookId, String title, String author, String category) {
+    public BookDTO(){}
+
+    public BookDTO(Long bookId, String title, String author, String category) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;

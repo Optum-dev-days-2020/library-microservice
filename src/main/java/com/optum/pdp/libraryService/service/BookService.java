@@ -1,29 +1,41 @@
 package com.optum.pdp.libraryService.service;
 
 import com.optum.pdp.libraryService.model.DTO.BookDTO;
+import com.optum.pdp.libraryService.model.entity.BookEntity;
+import com.optum.pdp.libraryService.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
 
-    private List<BookDTO> bookEntities = new ArrayList<>(Arrays.asList(
-            new BookDTO("1", "Brave New World", "Aldous Huxley", "sci-fi"),
-            new BookDTO("2", "Modern Java in Action", "Alan Mycroft", "tech"),
-            new BookDTO("3", "Design Pattern", "Eric Gamma", "tech"),
-            new BookDTO("4", "Nineteen Eighty-Four", "George Orwell", "fictional"),
-            new BookDTO("5", "A Brief History of Time", "Stephen Hawking", "non-fictional"))
-    );
+    private BookRepository bookRepository;
+
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
 
     public List<BookDTO> getAllBooks() {
-        return bookEntities;
+        List<BookDTO> allBooks = bookRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+        return allBooks;
+    }
+
+    private BookDTO toDTO(BookEntity bookEntity) {
+        return new BookDTO(bookEntity.getBookId(), bookEntity.getTitle(), bookEntity.getAuthor(), bookEntity.getCategory());
     }
 
     public BookDTO addNewBook(BookDTO newBook) {
-        this.bookEntities.add(newBook);
+        bookRepository.save(toEntity(newBook));
         return newBook;
+    }
+
+    private BookEntity toEntity(BookDTO bookDTO) {
+        BookEntity bookEntity = new BookEntity(bookDTO.getBookId(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getCategory());
+        return bookEntity;
     }
 }
