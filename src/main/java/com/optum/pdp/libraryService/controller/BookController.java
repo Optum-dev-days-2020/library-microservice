@@ -5,6 +5,7 @@ import com.optum.pdp.libraryService.service.BookService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/book")
@@ -19,6 +20,16 @@ public class BookController {
     @GetMapping
     public List<BookDTO> getBookList() {
         return bookService.getAllBooks();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<BookDTO> getBookById(@PathVariable("id") Long id) {
+        return bookService.getBookById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBookById(@PathVariable("id") Long id) {
+        bookService.deleteBookById(id);
     }
 
     @PostMapping

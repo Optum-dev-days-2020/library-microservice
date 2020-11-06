@@ -6,6 +6,7 @@ import com.optum.pdp.libraryService.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,5 +38,15 @@ public class BookService {
     private BookEntity toEntity(BookDTO bookDTO) {
         BookEntity bookEntity = new BookEntity(bookDTO.getBookId(), bookDTO.getTitle(), bookDTO.getAuthor(), bookDTO.getCategory());
         return bookEntity;
+    }
+
+    public Optional<BookDTO> getBookById(Long id) {
+        Optional<BookEntity> book = bookRepository.findById(id);
+        return book.map(this::toDTO);
+
+    }
+
+    public void deleteBookById(Long id) {
+        bookRepository.deleteById(id);
     }
 }
